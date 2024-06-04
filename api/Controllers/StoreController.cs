@@ -1,10 +1,16 @@
 ﻿using api.BusinessLogic.Interface;
+using api.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
+
     public class StoreController : ControllerBase
     {
         private readonly IStoreBusinessLogic _storeBusinessLogic;
@@ -18,7 +24,10 @@ namespace api.Controllers
         public IActionResult GetStoresByOwnerId(int ownerId)
         {
             var stores = _storeBusinessLogic.GetStoresByOwnerId(ownerId);
-            return Ok(stores);
+
+            var userName = User.Identity.Name;
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(id);
         }
     }
 }

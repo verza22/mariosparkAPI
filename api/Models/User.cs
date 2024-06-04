@@ -10,6 +10,8 @@
 
         public string Password { get; set; }
 
+        public string Token { get; set; }
+
         public int UserTypeId { get; set; }
 
         public int? OwnerId { get; set; }

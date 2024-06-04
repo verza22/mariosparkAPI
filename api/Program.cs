@@ -1,5 +1,9 @@
+using api.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +23,28 @@ var assembliesToScan = new[] { Assembly.GetExecutingAssembly() }; // Add more as
 RegisterClasses(builder.Services, "api.DataAccess", assembliesToScan);
 RegisterClasses(builder.Services, "api.BusinessLogic", assembliesToScan);
 
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(jwtOption =>
+{
+    var key = builder.Configuration.GetValue<string>("JwtConfig:Key");
+    var keyBytes = Encoding.ASCII.GetBytes(key);
+    jwtOption.SaveToken = true;
+    jwtOption.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+        ValidateLifetime = true,
+        ValidateAudience = false,
+        ValidateIssuer = false
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
