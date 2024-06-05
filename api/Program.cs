@@ -1,4 +1,3 @@
-using api.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -46,6 +45,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRouting();
 
 app.MapControllers();
 
