@@ -21,15 +21,12 @@ namespace api.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] JsonElement requestBody)
         {
-            // Verifica si el JSON tiene las propiedades userName y password
             if (!requestBody.TryGetProperty("userName", out var userNameElement) ||
                 !requestBody.TryGetProperty("password", out var passwordElement))
             {
-                // Si el JSON no tiene las propiedades requeridas, devuelve un mensaje de error
                 return BadRequest("Invalid JSON format. 'userName' and 'password' are required.");
             }
 
-            // Obtiene los valores de las propiedades
             var userName = userNameElement.GetString();
             var password = passwordElement.GetString();
 
