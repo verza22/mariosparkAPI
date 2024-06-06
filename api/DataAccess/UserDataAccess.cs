@@ -33,6 +33,7 @@ namespace api.DataAccess
                 user.Name = reader["TX_NAME"].ToString();
                 user.UserTypeId = Convert.ToInt32(reader["CD_USER_TYPE_ID"]);
                 user.OwnerId = Convert.ToInt32(reader["CD_OWNER_ID"]);
+                user.DefaultStoreID = Convert.ToInt32(reader["DEFAULT_STORE_ID"]);
             }
             reader.Close();
 

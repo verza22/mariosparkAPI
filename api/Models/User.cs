@@ -14,6 +14,7 @@
 
         public int UserTypeId { get; set; }
 
-        public int? OwnerId { get; set; }
+        public int OwnerId { get; set; }
+        public int DefaultStoreID { get; set; }
     }
 }

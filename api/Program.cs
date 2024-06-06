@@ -43,12 +43,18 @@ builder.Services.AddAuthentication(option =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapControllers();
+app.UseAuthentication(); // Ensure this middleware is before UseAuthorization()
+app.UseAuthorization();  // Ensure this middleware is before UseEndpoints()
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
 
