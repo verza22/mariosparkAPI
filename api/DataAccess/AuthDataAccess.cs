@@ -4,45 +4,42 @@ using System.Data;
 
 namespace api.DataAccess
 {
-    public class UserDataAccess
+    public class AuthDataAccess
     {
         private string connectionString;
 
-        public UserDataAccess(string connectionString)
+        public AuthDataAccess(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public List<User> GetUsers(int store_id)
+        public User Login(string userName, string password)
         {
-            List<User> users = new List<User>();
+            User user = new User();
 
             SqlConnection connection = new SqlConnection(connectionString);
-            SqlCommand command = new SqlCommand("GetUsers", connection);
+            SqlCommand command = new SqlCommand("Login", connection);
             command.CommandType = CommandType.StoredProcedure;
-
-            command.Parameters.AddWithValue("@store_id", store_id);
+            command.Parameters.AddWithValue("@UserName", userName);
+            command.Parameters.AddWithValue("@Password", password);
 
             connection.Open();
 
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                User user = new User();
-
                 user.Id = Convert.ToInt32(reader["KY_USER_ID"]);
                 user.Username = reader["TX_USERNAME"].ToString();
                 user.Name = reader["TX_NAME"].ToString();
                 user.UserTypeId = Convert.ToInt32(reader["CD_USER_TYPE_ID"]);
-
-                users.Add(user);
+                user.DefaultStoreID = Convert.ToInt32(reader["DEFAULT_STORE_ID"]);
             }
             reader.Close();
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
 
-            return users;
+            return user;
         }
     }
 }

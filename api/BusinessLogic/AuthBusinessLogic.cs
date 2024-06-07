@@ -11,18 +11,18 @@ namespace api.BusinessLogic
     public class AuthBusinessLogic : IAuthBusinessLogic
     {
         private readonly IConfiguration _configuration;
-        private readonly UserDataAccess _userDataAccess;
+        private readonly AuthDataAccess _authDataAccess;
 
         public AuthBusinessLogic(IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             _configuration = configuration;
-            _userDataAccess = new UserDataAccess(connectionString);
+            _authDataAccess = new AuthDataAccess(connectionString);
         }
 
         public User Login(string userName, string password)
         {
-            return _userDataAccess.Login(userName, password);
+            return _authDataAccess.Login(userName, password);
         }
 
         public string Authenticate(string userName, int userID)

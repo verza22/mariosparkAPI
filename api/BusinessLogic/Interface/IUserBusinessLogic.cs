@@ -4,6 +4,6 @@ namespace api.BusinessLogic.Interface
 {
     public interface IUserBusinessLogic
     {
-        User Login(string userName, string password);
+        List<User> GetUsers(int store_id);
     }
 }

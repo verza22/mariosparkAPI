@@ -35,14 +35,12 @@ namespace api.Controllers
 
                 User user = _authBusinessLogic.Login(userName, password);
 
-                if (user == null || user.UserId == 0)
+                if (user == null || user.Id == 0)
                     return Ok(user);
 
-                var token = _authBusinessLogic.Authenticate(userName, user.UserId);
+                string token = _authBusinessLogic.Authenticate(userName, user.Id);
 
-                user.Token = token;
-
-                return Ok(user);
+                return Ok(new { user, token });
             }
             catch (ArgumentException ex)
             {
