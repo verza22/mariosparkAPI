@@ -33,7 +33,7 @@ namespace api.DataAccess
                 room.Id = Convert.ToInt32(reader["KY_ROOM_ID"]);
                 room.Name = reader["TX_ROOM_NAME"].ToString();
                 room.Capacity = Convert.ToInt32(reader["INT_CAPACITY"]);
-                room.Type = reader["TX_ROOM_TYPE"].ToString();
+                room.Type = Convert.ToInt32(reader["CD_ROOM_TYPE_ID"].ToString());
                 room.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
 
                 rooms.Add(room);

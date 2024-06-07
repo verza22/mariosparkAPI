@@ -8,7 +8,7 @@
 
         public int Capacity { get; set; }
 
-        public string Type { get; set; }
+        public int Type { get; set; }
 
         public int StoreId { get; set; }
     }

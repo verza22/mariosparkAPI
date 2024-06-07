@@ -10,7 +10,7 @@
 
         public string Password { get; set; }
 
-        public int UserTypeId { get; set; }
+        public int Type { get; set; }
 
         public int DefaultStoreID { get; set; }
     }
