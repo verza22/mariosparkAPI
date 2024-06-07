@@ -125,5 +125,36 @@ namespace api.DataAccess
 
             return hotelOrderTypeList;
         }
+
+        public List<HotelRoomType> GetHotelRoomTypes(int store_id)
+        {
+            List<HotelRoomType> hotelRoomTypeList = new List<HotelRoomType>();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetHotelRoomTypes", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@store_id", store_id);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                HotelRoomType hotelRoomType = new HotelRoomType();
+
+                hotelRoomType.Id = Convert.ToInt32(reader["KY_ROOM_TYPE_ID"]);
+                hotelRoomType.Name = reader["TX_TYPE_NAME"].ToString();
+                hotelRoomType.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+
+                hotelRoomTypeList.Add(hotelRoomType);
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return hotelRoomTypeList;
+        }
     }
 }

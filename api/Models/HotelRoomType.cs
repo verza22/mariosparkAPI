@@ -2,9 +2,9 @@
 {
     public class HotelRoomType
     {
-        public int RoomTypeId { get; set; }
+        public int Id { get; set; }
 
-        public string TypeName { get; set; }
+        public string Name { get; set; }
 
         public int StoreId { get; set; }
     }

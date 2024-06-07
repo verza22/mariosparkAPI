@@ -36,15 +36,23 @@ namespace api.Controllers
                 User user = _authBusinessLogic.Login(userName, password);
 
                 if (user == null || user.Id == 0)
-                    return Ok(user);
+                    return Ok(new { user });
 
                 string token = _authBusinessLogic.Authenticate(userName, user.Id);
 
                 List<UserType> userTypes = _authBusinessLogic.GetUserTypes();
                 List<OrderStatus> orderStatusList = _authBusinessLogic.GetOrderStatus();
                 List<HotelOrderType> hotelOrderTypeList = _authBusinessLogic.GetHotelOrderTypes();
+                List<HotelRoomType> hotelRoomTypeList = _authBusinessLogic.GetHotelRoomTypes(user.DefaultStoreID);
 
-                return Ok(new { user, token, userTypes, orderStatusList, hotelOrderTypeList });
+                return Ok(new { 
+                    user, 
+                    token, 
+                    userTypes, 
+                    orderStatusList, 
+                    hotelOrderTypeList,
+                    hotelRoomTypeList
+                });
             }
             catch (ArgumentException ex)
             {

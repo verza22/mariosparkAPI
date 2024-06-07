@@ -9,5 +9,6 @@ namespace api.BusinessLogic.Interface
         List<UserType> GetUserTypes();
         List<OrderStatus> GetOrderStatus();
         List<HotelOrderType> GetHotelOrderTypes();
+        List<HotelRoomType> GetHotelRoomTypes(int store_id);
     }
 }

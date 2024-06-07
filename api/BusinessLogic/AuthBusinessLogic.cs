@@ -40,6 +40,11 @@ namespace api.BusinessLogic
             return _authDataAccess.GetHotelOrderTypes();
         }
 
+        public List<HotelRoomType> GetHotelRoomTypes(int store_id)
+        {
+            return _authDataAccess.GetHotelRoomTypes(store_id);
+        }
+
         public string Authenticate(string userName, int userID)
         {
             var key = _configuration.GetValue<string>("JwtConfig:Key");
