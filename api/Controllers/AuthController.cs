@@ -40,7 +40,11 @@ namespace api.Controllers
 
                 string token = _authBusinessLogic.Authenticate(userName, user.Id);
 
-                return Ok(new { user, token });
+                List<UserType> userTypes = _authBusinessLogic.GetUserTypes();
+                List<OrderStatus> orderStatusList = _authBusinessLogic.GetOrderStatus();
+                List<HotelOrderType> hotelOrderTypeList = _authBusinessLogic.GetHotelOrderTypes();
+
+                return Ok(new { user, token, userTypes, orderStatusList, hotelOrderTypeList });
             }
             catch (ArgumentException ex)
             {

@@ -2,8 +2,8 @@
 {
     public class OrderStatus
     {
-        public int OrderStatusId { get; set; }
+        public int Id { get; set; }
 
-        public string StatusName { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -2,10 +2,8 @@
 {
     public class HotelOrderType
     {
-        public int HotelOrderTypeId { get; set; }
+        public int Id { get; set; }
 
-        public string OrderTypeName { get; set; }
-
-        public int StoreId { get; set; }
+        public string Name { get; set; }
     }
 }

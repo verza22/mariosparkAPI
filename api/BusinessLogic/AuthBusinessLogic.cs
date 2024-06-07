@@ -25,6 +25,21 @@ namespace api.BusinessLogic
             return _authDataAccess.Login(userName, password);
         }
 
+        public List<UserType> GetUserTypes()
+        {
+            return _authDataAccess.GetUserTypes();
+        }
+
+        public List<OrderStatus> GetOrderStatus()
+        {
+            return _authDataAccess.GetOrderStatus();
+        }
+
+        public List<HotelOrderType> GetHotelOrderTypes()
+        {
+            return _authDataAccess.GetHotelOrderTypes();
+        }
+
         public string Authenticate(string userName, int userID)
         {
             var key = _configuration.GetValue<string>("JwtConfig:Key");

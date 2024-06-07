@@ -6,5 +6,8 @@ namespace api.BusinessLogic.Interface
     {
         User Login(string userName, string password);
         string Authenticate(string userName, int userID);
+        List<UserType> GetUserTypes();
+        List<OrderStatus> GetOrderStatus();
+        List<HotelOrderType> GetHotelOrderTypes();
     }
 }
