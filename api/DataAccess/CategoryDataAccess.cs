@@ -30,7 +30,7 @@ namespace api.DataAccess
             while (reader.Read())
             {
                 Category category = new Category();
-                category.CategoryId = Convert.ToInt32(reader["KY_CATEGORY_ID"]);
+                category.Id = Convert.ToInt32(reader["KY_CATEGORY_ID"]);
                 category.Name = reader["TX_NAME"].ToString();
                 category.Image = reader["TX_IMAGE"].ToString();
                 category.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);

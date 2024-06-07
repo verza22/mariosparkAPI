@@ -22,11 +22,18 @@ namespace api.Controllers
         [HttpGet("{ownerId}")]
         public IActionResult GetStoresByOwnerId(int ownerId)
         {
-            var stores = _storeBusinessLogic.GetStoresByOwnerId(ownerId);
+            try
+            {
+                var stores = _storeBusinessLogic.GetStoresByOwnerId(ownerId);
 
-            var userName = User.Identity.Name;
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Ok(id);
+                var userName = User.Identity.Name;
+                var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return Ok(id);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

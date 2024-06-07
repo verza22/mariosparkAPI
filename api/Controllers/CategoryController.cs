@@ -21,8 +21,15 @@ namespace api.Controllers
         [HttpGet("{storeID}")]
         public IActionResult GetCategories(int storeID)
         {
-            List<Category> categories = _categoryBusinessLogic.GetCategoriesByStoreId(storeID);
-            return Ok(categories);
+            try
+            {
+                List<Category> categories = _categoryBusinessLogic.GetCategoriesByStoreId(storeID);
+                return Ok(categories);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

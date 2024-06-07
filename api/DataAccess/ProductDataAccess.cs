@@ -33,7 +33,7 @@ namespace api.DataAccess
             {
                 Product product = new Product();
 
-                product.ProductId = Convert.ToInt32(reader["KY_PRODUCT_ID"]);
+                product.Id = Convert.ToInt32(reader["KY_PRODUCT_ID"]);
                 product.Name = reader["TX_NAME"].ToString();
                 product.Description = reader["TX_DESCRIPTION"].ToString();
                 product.Price = Convert.ToDecimal(reader["DB_PRICE"]);

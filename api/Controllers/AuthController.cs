@@ -1,4 +1,5 @@
 ﻿using api.BusinessLogic.Interface;
+using api.Lib;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,25 +22,32 @@ namespace api.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] JsonElement requestBody)
         {
-            if (!requestBody.TryGetProperty("userName", out var userNameElement) ||
-                !requestBody.TryGetProperty("password", out var passwordElement))
+            try
             {
-                return BadRequest("Invalid JSON format. 'userName' and 'password' are required.");
-            }
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>
+                {
+                    { "userName", typeof(string) },
+                    { "password", typeof(string) }
+                });
 
-            var userName = userNameElement.GetString();
-            var password = passwordElement.GetString();
+                string userName = (string)parameters["userName"];
+                string password = (string)parameters["password"];
 
-            User user = _authBusinessLogic.Login(userName, password);
+                User user = _authBusinessLogic.Login(userName, password);
 
-            if (user == null || user.UserId == 0)
+                if (user == null || user.UserId == 0)
+                    return Ok(user);
+
+                var token = _authBusinessLogic.Authenticate(userName, user.UserId);
+
+                user.Token = token;
+
                 return Ok(user);
-
-            var token = _authBusinessLogic.Authenticate(userName, user.UserId);
-
-            user.Token = token;
-
-            return Ok(user);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
