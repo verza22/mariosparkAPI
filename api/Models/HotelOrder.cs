@@ -2,7 +2,7 @@
 {
     public class HotelOrder
     {
-        public int OrderId { get; set; }
+        public int Id { get; set; }
 
         public int UserId { get; set; }
 
@@ -16,10 +16,11 @@
 
         public int People { get; set; }
 
-        public string Room { get; set; }
-
-        public string Customer { get; set; }
-
         public int StoreId { get; set; }
+
+        public HotelRoom Room { get; set; }
+
+        public Customer Customer { get; set; }
+
     }
 }

@@ -2,13 +2,13 @@
 {
     public class HotelRoom
     {
-        public int RoomId { get; set; }
+        public int Id { get; set; }
 
-        public string RoomName { get; set; }
+        public string Name { get; set; }
 
         public int Capacity { get; set; }
 
-        public string RoomType { get; set; }
+        public string Type { get; set; }
 
         public int StoreId { get; set; }
     }

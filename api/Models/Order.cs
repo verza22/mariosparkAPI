@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        public int OrderId { get; set; }
+        public int Id { get; set; }
 
         public int CashierId { get; set; }
 
@@ -22,8 +22,8 @@
 
         public int StoreId { get; set; }
 
-        public string Customer { get; set; }
+        public Customer Customer { get; set; }
 
-        public string Products { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
