@@ -18,5 +18,19 @@ namespace api.BusinessLogic
         {
             return _productDataAccess.GetProducts(storeID, categoryID);
         }
+        public Product GetProduct(int id)
+        {
+            return _productDataAccess.GetProduct(id);
+        }
+
+        public bool AddOrUpdateProduct(Product product)
+        {
+            return _productDataAccess.AddOrUpdateProduct(product);
+        }
+
+        public bool RemoveProduct(int productId)
+        {
+            return _productDataAccess.RemoveProduct(productId);
+        }
     }
 }

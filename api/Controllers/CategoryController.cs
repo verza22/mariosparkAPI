@@ -46,18 +46,11 @@ namespace api.Controllers
                 int categoryID = (int)parameters["categoryID"];
 
                 Category category = _categoryBusinessLogic.GetCategory(categoryID);
-
-                string imageUrl = category.Image;
-
                 bool isDeleted = _categoryBusinessLogic.RemoveCategory(categoryID);
 
-                if (isDeleted && !string.IsNullOrEmpty(imageUrl))
+                if (isDeleted && !string.IsNullOrEmpty(category.Image))
                 {
-                    string imagePath = Path.Combine("wwwroot", imageUrl);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
+                    Util.RemoveImage(category.Image);
                 }
 
                 return Ok(isDeleted);
@@ -79,13 +72,9 @@ namespace api.Controllers
                 Category category = _categoryBusinessLogic.GetCategory(categoryID);
                 string imageUrl = category.Image;
 
-                if (categoryID > 0 && changeImage) {
-
-                    string imagePath = Path.Combine("wwwroot", imageUrl);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
+                if (categoryID > 0 && changeImage) 
+                {
+                    Util.RemoveImage(imageUrl);
                 }
 
                 if (changeImage) { 

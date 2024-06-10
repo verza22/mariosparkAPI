@@ -1,9 +1,20 @@
-﻿using System.Text.Json;
+﻿using api.Models;
+using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace api.Lib
 {
     public static class Util
     {
+        public static void RemoveImage(string imageUrl) 
+        {
+            string imagePath = Path.Combine("wwwroot", imageUrl);
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+        }
+
         public static Dictionary<string, object> ValidateRequest(JsonElement requestBody, Dictionary<string, Type> expectedParameters)
         {
             var parameters = new Dictionary<string, object>();

@@ -50,5 +50,85 @@ namespace api.DataAccess
 
             return products;
         }
+
+        public Product GetProduct(int id)
+        {
+            Product product = new Product();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetProduct", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                product.Id = Convert.ToInt32(reader["KY_PRODUCT_ID"]);
+                product.Name = reader["TX_NAME"].ToString();
+                product.Description = reader["TX_DESCRIPTION"].ToString();
+                product.Price = Convert.ToDecimal(reader["DB_PRICE"]);
+                product.CategoryId = Convert.ToInt32(reader["CD_CATEGORY_ID"]);
+                product.Image = reader["TX_IMAGE"].ToString();
+                product.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return product;
+        }
+
+        public bool RemoveProduct(int productId)
+        {
+            bool isDeleted = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("RemoveProduct", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@productId", productId);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+
+            isDeleted = (result == 1);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isDeleted;
+        }
+
+        public bool AddOrUpdateProduct(Product product)
+        {
+            bool isAdded = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("AddOrUpdateProduct", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@productId", product.Id);
+            command.Parameters.AddWithValue("@name", product.Name);
+            command.Parameters.AddWithValue("@description", product.Description);
+            command.Parameters.AddWithValue("@price", product.Price);
+            command.Parameters.AddWithValue("@categoryId", product.CategoryId);
+            command.Parameters.AddWithValue("@image", product.Image);
+            command.Parameters.AddWithValue("@storeID", product.StoreId);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+            isAdded = (result > 0);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isAdded;
+        }
     }
 }
