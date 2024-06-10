@@ -1,8 +1,11 @@
-﻿using api.BusinessLogic.Interface;
+﻿using api.BusinessLogic;
+using api.BusinessLogic.Interface;
+using api.Lib;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace api.Controllers
 {
@@ -27,6 +30,85 @@ namespace api.Controllers
                 return Ok(categories);
             }
             catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("RemoveCategory")]
+        public IActionResult RemoveCategory([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "categoryID", typeof(int) }
+                });
+                int categoryID = (int)parameters["categoryID"];
+
+                Category category = _categoryBusinessLogic.GetCategory(categoryID);
+
+                string imageUrl = category.Image;
+
+                bool isDeleted = _categoryBusinessLogic.RemoveCategory(categoryID);
+
+                if (isDeleted && !string.IsNullOrEmpty(imageUrl))
+                {
+                    string imagePath = Path.Combine("wwwroot", imageUrl);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                return Ok(isDeleted);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("AddOrUpdateCategory")]
+        public async Task<IActionResult> AddOrUpdateCategory([FromForm] int categoryID, [FromForm] string name, [FromForm] int storeID, [FromForm] bool changeImage, IFormFile? image)
+        {
+            try
+            {
+                if (changeImage && (image == null || image.Length == 0))
+                    return BadRequest("No image provided.");
+
+                Category category = _categoryBusinessLogic.GetCategory(categoryID);
+                string imageUrl = category.Image;
+
+                if (categoryID > 0 && changeImage) {
+
+                    string imagePath = Path.Combine("wwwroot", imageUrl);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                if (changeImage) { 
+                    var fileName = $"{DateTime.Now:yyyyMMddHHmmss}_{storeID}_{Guid.NewGuid().ToString()}.jpg";
+
+                    var folderPath = Path.Combine("wwwroot", "images");
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    var filePath = Path.Combine(folderPath, fileName);
+
+                    var stream = new FileStream(filePath, FileMode.Create);
+                    await image.CopyToAsync(stream);
+                    stream.Close();
+
+                    imageUrl = Path.Combine("images", fileName);
+                }
+
+                bool isAdded = _categoryBusinessLogic.AddOrUpdateCategory(categoryID, name, imageUrl, storeID);
+
+                return Ok(isAdded);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

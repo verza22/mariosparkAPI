@@ -22,6 +22,7 @@ namespace api.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand("GetCategoriesByStoreId", connection);
             command.CommandType = CommandType.StoredProcedure;
+
             command.Parameters.AddWithValue("@store_id", storeID);
 
             connection.Open();
@@ -43,6 +44,80 @@ namespace api.DataAccess
                 connection.Close();
 
             return categories;
+        }
+
+        public Category GetCategory(int id)
+        {
+            Category category = new Category();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetCategory", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                category.Id = Convert.ToInt32(reader["KY_CATEGORY_ID"]);
+                category.Name = reader["TX_NAME"].ToString();
+                category.Image = reader["TX_IMAGE"].ToString();
+                category.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return category;
+        }
+
+        public bool RemoveCategory(int categoryId)
+        {
+            bool isDeleted = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("RemoveCategory", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@categoryId", categoryId);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+
+            isDeleted = (result == 1);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isDeleted;
+        }
+
+        public bool AddOrUpdateCategory(int categoryId, string name, string image, int storeID)
+        {
+            bool isAdded = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("AddOrUpdateCategory", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@categoryId", categoryId);
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@image", image);
+            command.Parameters.AddWithValue("@storeID", storeID);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+            isAdded = (result > 0);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isAdded;
         }
     }
 }

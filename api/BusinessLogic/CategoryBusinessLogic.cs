@@ -18,5 +18,19 @@ namespace api.BusinessLogic
         {
             return _categoryDataAccess.GetCategoriesByStoreId(storeID);
         }
+        public Category GetCategory(int id)
+        {
+            return _categoryDataAccess.GetCategory(id);
+        }
+
+        public bool AddOrUpdateCategory(int categoryID, string name, string image, int storeID)
+        {
+            return _categoryDataAccess.AddOrUpdateCategory(categoryID, name, image, storeID);
+        }
+
+        public bool RemoveCategory(int categoryId)
+        {
+            return _categoryDataAccess.RemoveCategory(categoryId);
+        }
     }
 }
