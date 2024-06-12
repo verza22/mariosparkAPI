@@ -18,5 +18,17 @@ namespace api.BusinessLogic
         {
             return _customerDataAccess.GetCustomers(storeID);
         }
+        public Customer GetCustomer(int customerID)
+        {
+            return _customerDataAccess.GetCustomer(customerID);
+        }
+        public bool RemoveCustomer(int customerID)
+        {
+            return _customerDataAccess.RemoveCustomer(customerID);
+        }
+        public bool AddOrUpdateCustomer(Customer customer)
+        {
+            return _customerDataAccess.AddOrUpdateCustomer(customer);
+        }
     }
 }

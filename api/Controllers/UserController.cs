@@ -41,5 +41,58 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("RemoveUser")]
+        public IActionResult RemoveUser([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "userID", typeof(int) }
+                });
+                int userID = (int)parameters["userID"];
+
+                bool isDeleted = _userBusinessLogic.RemoveUser(userID);
+
+                return Ok(isDeleted);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("AddOrUpdateUser")]
+        public async Task<IActionResult> AddOrUpdateUser([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "id", typeof(int) },
+                    { "user", typeof(string) },
+                    { "name", typeof(string) },
+                    { "password", typeof(string) },
+                    { "userType", typeof(int) },
+                    { "storeID", typeof(int) }
+                });
+
+                User user = new User();
+
+                user.Id = (int)parameters["id"];
+                user.Username = (string)parameters["user"];
+                user.Name = (string)parameters["name"];
+                user.Password = (string)parameters["password"];
+                user.Type = (int)parameters["userType"];
+                user.DefaultStoreID = (int)parameters["storeID"];
+
+                bool isAdded = _userBusinessLogic.AddOrUpdateUser(user);
+
+                return Ok(isAdded);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

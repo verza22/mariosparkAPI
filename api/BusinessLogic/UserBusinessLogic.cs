@@ -18,5 +18,15 @@ namespace api.BusinessLogic
         {
             return _userDataAccess.GetUsers(store_id);
         }
+
+        public bool RemoveUser(int userID)
+        {
+            return _userDataAccess.RemoveUser(userID);
+        }
+
+        public bool AddOrUpdateUser(User user)
+        {
+            return _userDataAccess.AddOrUpdateUser(user);
+        }
     }
 }
