@@ -18,5 +18,15 @@ namespace api.BusinessLogic
         {
             return _hotelOrderDataAccess.GetHotelOrders(store_id);
         }
+
+        public bool RemoveHotelOrder(int orderID)
+        {
+            return _hotelOrderDataAccess.RemoveHotelOrder(orderID);
+        }
+
+        public bool AddOrUpdateHotelOrder(HotelOrder order)
+        {
+            return _hotelOrderDataAccess.AddOrUpdateHotelOrder(order);
+        }
     }
 }

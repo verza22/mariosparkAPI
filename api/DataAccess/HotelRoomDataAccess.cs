@@ -45,5 +45,52 @@ namespace api.DataAccess
 
             return rooms;
         }
+
+        public bool RemoveHotelRoom(int roomID)
+        {
+            bool isDeleted = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("RemoveHotelRoom", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@roomId", roomID);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+
+            isDeleted = (result == 1);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isDeleted;
+        }
+
+        public bool AddOrUpdateHotelRoom(HotelRoom room)
+        {
+            bool isAdded = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("AddOrUpdateHotelRoom", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@roomId", room.Id);
+            command.Parameters.AddWithValue("@roomName", room.Name);
+            command.Parameters.AddWithValue("@capacity", room.Capacity);
+            command.Parameters.AddWithValue("@roomTypeId", room.Type);
+            command.Parameters.AddWithValue("@storeId", room.StoreId);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+            isAdded = (result > 0);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isAdded;
+        }
     }
 }

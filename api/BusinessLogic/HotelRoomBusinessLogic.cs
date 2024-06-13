@@ -18,5 +18,15 @@ namespace api.BusinessLogic
         {
             return _hotelRoomDataAccess.GetHotelRooms(store_id);
         }
+
+        public bool RemoveHotelRoom(int roomID)
+        {
+            return _hotelRoomDataAccess.RemoveHotelRoom(roomID);
+        }
+
+        public bool AddOrUpdateHotelRoom(HotelRoom room)
+        {
+            return _hotelRoomDataAccess.AddOrUpdateHotelRoom(room);
+        }
     }
 }

@@ -53,5 +53,37 @@ namespace api.DataAccess
 
             return orders;
         }
+
+        public bool InsertOrder(Order order)
+        {
+            bool isAdded = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("InsertOrder", connection);
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@cashierId", order.CashierId);
+            command.Parameters.AddWithValue("@tableNumber", order.TableNumber);
+            command.Parameters.AddWithValue("@waiterId", order.WaiterId);
+            command.Parameters.AddWithValue("@chefId", order.ChefId);
+            command.Parameters.AddWithValue("@total", order.Total);
+            command.Parameters.AddWithValue("@date", order.Date);
+            command.Parameters.AddWithValue("@paymentMethod", order.PaymentMethod);
+            command.Parameters.AddWithValue("@orderStatus", order.OrderStatusId);
+            command.Parameters.AddWithValue("@storeId", order.StoreId);
+            command.Parameters.AddWithValue("@customer", JsonConvert.SerializeObject(order.Customer));
+            command.Parameters.AddWithValue("@products", JsonConvert.SerializeObject(order.Products));
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+            isAdded = (result > 0);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isAdded;
+        }
     }
 }

@@ -41,6 +41,14 @@ namespace api.Lib
                     {
                         value = element.GetString();
                     }
+                    else if (param.Value == typeof(decimal))
+                    {
+                        value = element.GetDecimal();
+                    }
+                    else if (param.Value == typeof(DateTime))
+                    {
+                        value = element.GetDateTime();
+                    }
                     else
                     {
                         throw new ArgumentException($"Unsupported parameter type for '{param.Key}'.");

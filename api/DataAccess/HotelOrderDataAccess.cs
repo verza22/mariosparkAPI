@@ -51,5 +51,58 @@ namespace api.DataAccess
 
             return orders;
         }
+
+        public bool RemoveHotelOrder(int orderID)
+        {
+            bool isDeleted = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("RemoveHotelOrder", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@orderId", orderID);
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+
+            isDeleted = (result == 1);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isDeleted;
+        }
+
+        public bool AddOrUpdateHotelOrder(HotelOrder order)
+        {
+            bool isAdded = false;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("AddOrUpdateHotelOrder", connection);
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@orderId", order.Id);
+            command.Parameters.AddWithValue("@userId", order.UserId);
+            command.Parameters.AddWithValue("@total", order.Total);
+            command.Parameters.AddWithValue("@dateIn", order.DateIn);
+            command.Parameters.AddWithValue("@dateOut", order.DateOut);
+            command.Parameters.AddWithValue("@paymentMethod", order.PaymentMethod);
+            command.Parameters.AddWithValue("@people", order.People);
+            command.Parameters.AddWithValue("@storeId", order.StoreId);
+            command.Parameters.AddWithValue("@customer", JsonConvert.SerializeObject(order.Customer));
+            command.Parameters.AddWithValue("@room", JsonConvert.SerializeObject(order.Room));
+
+            connection.Open();
+
+            int result = command.ExecuteNonQuery();
+            isAdded = (result > 0);
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return isAdded;
+        }
     }
 }

@@ -41,5 +41,56 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("RemoveHotelRoom")]
+        public IActionResult RemoveHotelRoom([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "roomID", typeof(int) }
+                });
+                int roomID = (int)parameters["roomID"];
+
+                bool isDeleted = _hotelRoomBusinessLogic.RemoveHotelRoom(roomID);
+
+                return Ok(isDeleted);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("AddOrUpdateHotelRoom")]
+        public async Task<IActionResult> AddOrUpdateHotelRoom([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "id", typeof(int) },
+                    { "name", typeof(string) },
+                    { "capacity", typeof(int) },
+                    { "roomType", typeof(int) },
+                    { "storeID", typeof(int) }
+                });
+
+                HotelRoom room = new HotelRoom();
+
+                room.Id = (int)parameters["id"];
+                room.Name = (string)parameters["name"];
+                room.Capacity = (int)parameters["capacity"];
+                room.Type = (int)parameters["roomType"];
+                room.StoreId = (int)parameters["storeID"];
+
+                bool isAdded = _hotelRoomBusinessLogic.AddOrUpdateHotelRoom(room);
+
+                return Ok(isAdded);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
