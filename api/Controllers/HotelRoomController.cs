@@ -83,9 +83,9 @@ namespace api.Controllers
                 room.Type = (int)parameters["roomType"];
                 room.StoreId = (int)parameters["storeID"];
 
-                bool isAdded = _hotelRoomBusinessLogic.AddOrUpdateHotelRoom(room);
+                int result = _hotelRoomBusinessLogic.AddOrUpdateHotelRoom(room);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

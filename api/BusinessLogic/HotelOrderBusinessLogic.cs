@@ -24,7 +24,7 @@ namespace api.BusinessLogic
             return _hotelOrderDataAccess.RemoveHotelOrder(orderID);
         }
 
-        public bool AddOrUpdateHotelOrder(HotelOrder order)
+        public int AddOrUpdateHotelOrder(HotelOrder order)
         {
             return _hotelOrderDataAccess.AddOrUpdateHotelOrder(order);
         }

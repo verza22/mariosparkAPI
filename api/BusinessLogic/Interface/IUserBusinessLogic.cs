@@ -6,6 +6,6 @@ namespace api.BusinessLogic.Interface
     {
         List<User> GetUsers(int store_id);
         bool RemoveUser(int userID);
-        bool AddOrUpdateUser(User user);
+        int AddOrUpdateUser(User user);
     }
 }

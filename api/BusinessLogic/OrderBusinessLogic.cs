@@ -19,7 +19,7 @@ namespace api.BusinessLogic
             return _orderDataAccess.GetOrders(store_id);
         }
 
-        public bool InsertOrder(Order order)
+        public int InsertOrder(Order order)
         {
             return _orderDataAccess.InsertOrder(order);
         }

@@ -86,17 +86,17 @@ namespace api.Controllers
                 order.Id = (int)parameters["orderID"];
                 order.UserId = (int)parameters["userID"];
                 order.Total = (decimal)parameters["total"];
-                order.DateIn = (DateTime)parameters["dateIN"];
-                order.DateOut = (DateTime)parameters["dateOUT"];
+                order.DateIN = (DateTime)parameters["dateIN"];
+                order.DateOUT = (DateTime)parameters["dateOUT"];
                 order.PaymentMethod = (string)parameters["paymentMethod"];
                 order.People = (int)parameters["people"];
                 order.StoreId = (int)parameters["storeID"];
                 order.Customer = JsonConvert.DeserializeObject<Customer>((string)parameters["customer"]);
                 order.Room = JsonConvert.DeserializeObject<HotelRoom>((string)parameters["room"]);
 
-                bool isAdded = _hotelOrderBusinessLogic.AddOrUpdateHotelOrder(order);
+                int result = _hotelOrderBusinessLogic.AddOrUpdateHotelOrder(order);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

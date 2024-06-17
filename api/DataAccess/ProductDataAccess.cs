@@ -104,9 +104,9 @@ namespace api.DataAccess
             return isDeleted;
         }
 
-        public bool AddOrUpdateProduct(Product product)
+        public int AddOrUpdateProduct(Product product)
         {
-            bool isAdded = false;
+            int result = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand("AddOrUpdateProduct", connection);
@@ -122,13 +122,18 @@ namespace api.DataAccess
 
             connection.Open();
 
-            int result = command.ExecuteNonQuery();
-            isAdded = (result > 0);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
 
-            return isAdded;
+            return result;
         }
     }
 }

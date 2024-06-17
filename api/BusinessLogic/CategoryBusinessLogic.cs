@@ -23,7 +23,7 @@ namespace api.BusinessLogic
             return _categoryDataAccess.GetCategory(id);
         }
 
-        public bool AddOrUpdateCategory(int categoryID, string name, string image, int storeID)
+        public int AddOrUpdateCategory(int categoryID, string name, string image, int storeID)
         {
             return _categoryDataAccess.AddOrUpdateCategory(categoryID, name, image, storeID);
         }

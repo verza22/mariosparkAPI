@@ -24,7 +24,7 @@ namespace api.BusinessLogic
             return _userDataAccess.RemoveUser(userID);
         }
 
-        public bool AddOrUpdateUser(User user)
+        public int AddOrUpdateUser(User user)
         {
             return _userDataAccess.AddOrUpdateUser(user);
         }

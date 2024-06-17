@@ -23,7 +23,7 @@ namespace api.BusinessLogic
             return _productDataAccess.GetProduct(id);
         }
 
-        public bool AddOrUpdateProduct(Product product)
+        public int AddOrUpdateProduct(Product product)
         {
             return _productDataAccess.AddOrUpdateProduct(product);
         }

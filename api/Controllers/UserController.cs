@@ -85,9 +85,9 @@ namespace api.Controllers
                 user.Type = (int)parameters["userType"];
                 user.DefaultStoreID = (int)parameters["storeID"];
 
-                bool isAdded = _userBusinessLogic.AddOrUpdateUser(user);
+                int result = _userBusinessLogic.AddOrUpdateUser(user);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

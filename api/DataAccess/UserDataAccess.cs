@@ -59,7 +59,7 @@ namespace api.DataAccess
 
             int result = command.ExecuteNonQuery();
 
-            isDeleted = (result == 1);
+            isDeleted = (result > 0);
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
@@ -67,9 +67,9 @@ namespace api.DataAccess
             return isDeleted;
         }
 
-        public bool AddOrUpdateUser(User user)
+        public int AddOrUpdateUser(User user)
         {
-            bool isAdded = false;
+            int result = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand("AddOrUpdateUser", connection);
@@ -84,13 +84,18 @@ namespace api.DataAccess
 
             connection.Open();
 
-            int result = command.ExecuteNonQuery();
-            isAdded = (result > 0);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
 
-            return isAdded;
+            return result;
         }
     }
 }

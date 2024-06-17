@@ -75,9 +75,9 @@ namespace api.Controllers
                 order.Customer = JsonConvert.DeserializeObject<Customer>((string)parameters["customer"]);
                 order.Products = JsonConvert.DeserializeObject<List<Product>>((string)parameters["products"]);
 
-                bool isAdded = _orderBusinessLogic.InsertOrder(order);
+                int result = _orderBusinessLogic.InsertOrder(order);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

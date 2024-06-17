@@ -68,9 +68,9 @@ namespace api.DataAccess
             return isDeleted;
         }
 
-        public bool AddOrUpdateHotelRoom(HotelRoom room)
+        public int AddOrUpdateHotelRoom(HotelRoom room)
         {
-            bool isAdded = false;
+            int result = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand("AddOrUpdateHotelRoom", connection);
@@ -84,13 +84,18 @@ namespace api.DataAccess
 
             connection.Open();
 
-            int result = command.ExecuteNonQuery();
-            isAdded = (result > 0);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
 
-            return isAdded;
+            return result;
         }
     }
 }

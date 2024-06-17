@@ -127,9 +127,9 @@ namespace api.Controllers
                 product.StoreId = storeID;
                 product.Image = imageUrl;
 
-                bool isAdded = _productBusinessLogic.AddOrUpdateProduct(product);
+                int result = _productBusinessLogic.AddOrUpdateProduct(product);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

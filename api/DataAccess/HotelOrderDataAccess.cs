@@ -34,8 +34,8 @@ namespace api.DataAccess
                 order.Id = Convert.ToInt32(reader["KY_ORDER_ID"]);
                 order.UserId = Convert.ToInt32(reader["CD_USER_ID"]);
                 order.Total = Convert.ToDecimal(reader["DEC_TOTAL"]);
-                order.DateIn = Convert.ToDateTime(reader["DT_DATE_IN"]);
-                order.DateOut = Convert.ToDateTime(reader["DT_DATE_OUT"]);
+                order.DateIN = Convert.ToDateTime(reader["DT_DATE_IN"]);
+                order.DateOUT = Convert.ToDateTime(reader["DT_DATE_OUT"]);
                 order.PaymentMethod = reader["TX_PAYMENT_METHOD"].ToString();
                 order.People = Convert.ToInt32(reader["INT_PEOPLE"]);
                 order.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
@@ -74,9 +74,9 @@ namespace api.DataAccess
             return isDeleted;
         }
 
-        public bool AddOrUpdateHotelOrder(HotelOrder order)
+        public int AddOrUpdateHotelOrder(HotelOrder order)
         {
-            bool isAdded = false;
+            int result = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand("AddOrUpdateHotelOrder", connection);
@@ -86,8 +86,8 @@ namespace api.DataAccess
             command.Parameters.AddWithValue("@orderId", order.Id);
             command.Parameters.AddWithValue("@userId", order.UserId);
             command.Parameters.AddWithValue("@total", order.Total);
-            command.Parameters.AddWithValue("@dateIn", order.DateIn);
-            command.Parameters.AddWithValue("@dateOut", order.DateOut);
+            command.Parameters.AddWithValue("@dateIn", order.DateIN);
+            command.Parameters.AddWithValue("@dateOut", order.DateOUT);
             command.Parameters.AddWithValue("@paymentMethod", order.PaymentMethod);
             command.Parameters.AddWithValue("@people", order.People);
             command.Parameters.AddWithValue("@storeId", order.StoreId);
@@ -96,13 +96,18 @@ namespace api.DataAccess
 
             connection.Open();
 
-            int result = command.ExecuteNonQuery();
-            isAdded = (result > 0);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
 
             if (connection.State == ConnectionState.Open)
                 connection.Close();
 
-            return isAdded;
+            return result;
         }
     }
 }

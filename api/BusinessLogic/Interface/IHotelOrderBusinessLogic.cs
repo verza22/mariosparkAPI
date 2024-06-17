@@ -6,6 +6,6 @@ namespace api.BusinessLogic.Interface
     {
         List<HotelOrder> GetHotelOrders(int store_id);
         bool RemoveHotelOrder(int orderID);
-        bool AddOrUpdateHotelOrder(HotelOrder order);
+        int AddOrUpdateHotelOrder(HotelOrder order);
     }
 }

@@ -7,6 +7,6 @@ namespace api.BusinessLogic.Interface
         List<Customer> GetCustomers(int storeID);
         Customer GetCustomer(int customerID);
         bool RemoveCustomer(int customerID);
-        bool AddOrUpdateCustomer(Customer customer);
+        int AddOrUpdateCustomer(Customer customer);
     }
 }

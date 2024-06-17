@@ -87,9 +87,9 @@ namespace api.Controllers
                 customer.Address = (string)parameters["address"];
                 customer.StoreId = (int)parameters["storeID"];
 
-                bool isAdded = _customerBusinessLogic.AddOrUpdateCustomer(customer);
+                int result = _customerBusinessLogic.AddOrUpdateCustomer(customer);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

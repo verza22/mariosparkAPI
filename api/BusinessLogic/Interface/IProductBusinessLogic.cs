@@ -7,6 +7,6 @@ namespace api.BusinessLogic.Interface
         List<Product> GetProducts(int storeID, int categoryID);
         Product GetProduct(int id);
         bool RemoveProduct(int productId);
-        bool AddOrUpdateProduct(Product product);
+        int AddOrUpdateProduct(Product product);
     }
 }

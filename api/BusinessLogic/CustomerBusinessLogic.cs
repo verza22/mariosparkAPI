@@ -26,7 +26,7 @@ namespace api.BusinessLogic
         {
             return _customerDataAccess.RemoveCustomer(customerID);
         }
-        public bool AddOrUpdateCustomer(Customer customer)
+        public int AddOrUpdateCustomer(Customer customer)
         {
             return _customerDataAccess.AddOrUpdateCustomer(customer);
         }

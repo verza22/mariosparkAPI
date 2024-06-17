@@ -7,6 +7,6 @@ namespace api.BusinessLogic.Interface
         List<Category> GetCategoriesByStoreId(int storeID);
         Category GetCategory(int id);
         bool RemoveCategory(int categoryId);
-        bool AddOrUpdateCategory(int categoryID, string name, string image, int storeID);
+        int AddOrUpdateCategory(int categoryID, string name, string image, int storeID);
     }
 }

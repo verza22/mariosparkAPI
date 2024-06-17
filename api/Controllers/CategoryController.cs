@@ -93,9 +93,9 @@ namespace api.Controllers
                     imageUrl = Path.Combine("images", fileName);
                 }
 
-                bool isAdded = _categoryBusinessLogic.AddOrUpdateCategory(categoryID, name, imageUrl, storeID);
+                int result = _categoryBusinessLogic.AddOrUpdateCategory(categoryID, name, imageUrl, storeID);
 
-                return Ok(isAdded);
+                return Ok(result);
             }
             catch (Exception ex)
             {

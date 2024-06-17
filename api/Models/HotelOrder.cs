@@ -8,9 +8,9 @@
 
         public decimal Total { get; set; }
 
-        public DateTime DateIn { get; set; }
+        public DateTime DateIN { get; set; }
 
-        public DateTime DateOut { get; set; }
+        public DateTime DateOUT { get; set; }
 
         public string PaymentMethod { get; set; }
 
