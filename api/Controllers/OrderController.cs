@@ -84,5 +84,45 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("SyncOrders")]
+        public async Task<IActionResult> SyncOrders([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "data", typeof(string) }
+                });
+
+                string data = (string)parameters["data"];
+
+                var orders = JsonConvert.DeserializeObject<List<Order>>(data);
+
+                bool result = true;
+
+
+                foreach (Order order in orders)
+                {
+                    //validations
+                    if (order == null)
+                    {
+                        return BadRequest("Invalid order in the list.");
+                    }
+
+                    //insert data
+                    int resultAux = _orderBusinessLogic.InsertOrder(order);
+
+                    if (resultAux == 0) {
+                        result = false;
+                    }
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
