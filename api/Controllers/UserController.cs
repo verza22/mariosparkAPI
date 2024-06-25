@@ -94,5 +94,27 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("UpdateUserToken")]
+        public IActionResult UpdateUserToken([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "userID", typeof(int) },
+                    { "token", typeof(string) }
+                });
+                int userID = (int)parameters["userID"];
+                string token = (string)parameters["token"];
+
+                int isUpdated = _userBusinessLogic.UpdateUserToken(userID, token);
+
+                return Ok(isUpdated);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

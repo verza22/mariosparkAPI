@@ -97,5 +97,57 @@ namespace api.DataAccess
 
             return result;
         }
+
+        public int UpdateUserToken(int userID, string token)
+        {
+            int result = 0;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("UpdateUserToken", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@userId", userID);
+            command.Parameters.AddWithValue("@token", token);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return result;
+        }
+
+        public List<string> GetUserTokenByStore(int storeID)
+        {
+            List<string> tokenList = new List<string>();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetUserTokenByStore", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@storeID", storeID);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                tokenList.Add(reader["TX_FCM_TOKEN"].ToString());
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return tokenList;
+        }
     }
 }

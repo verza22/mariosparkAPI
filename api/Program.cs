@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.FirebaseCloudMessaging.v1;
+using Google.Apis.Services;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 
 // Add configuration to access appsettings.json
@@ -16,6 +19,9 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 // Register the connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddSingleton(connectionString);
+
+// Configure Firebase Cloud Messaging (FCM) client
+ConfigureFirebaseMessaging(builder.Services, builder.Configuration);
 
 // Scan and register DataAccess and BusinessLogic classes
 var assembliesToScan = new[] { Assembly.GetExecutingAssembly() }; // Add more assemblies if necessary
@@ -88,4 +94,26 @@ void RegisterClasses(IServiceCollection services, string @namespace, Assembly[] 
             }
         }
     }
+}
+
+// Configure Firebase Cloud Messaging (FCM) client
+void ConfigureFirebaseMessaging(IServiceCollection services, IConfiguration configuration)
+{
+    // Load Firebase admin credentials from a JSON file
+    GoogleCredential credential;
+    using (var stream = new FileStream("Credentials/mariospark-182a8-firebase-adminsdk-3lib8-afd21d764c.json", FileMode.Open, FileAccess.Read))
+    {
+        credential = GoogleCredential.FromStream(stream)
+            .CreateScoped(FirebaseCloudMessagingService.Scope.FirebaseMessaging);
+    }
+
+    // Initialize Firebase Cloud Messaging service
+    var fcmService = new FirebaseCloudMessagingService(new BaseClientService.Initializer
+    {
+        HttpClientInitializer = credential,
+        ApplicationName = "MariosPark",
+    });
+
+    // Register Firebase Cloud Messaging service as singleton
+    services.AddSingleton(fcmService);
 }

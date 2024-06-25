@@ -28,5 +28,15 @@ namespace api.BusinessLogic
         {
             return _userDataAccess.AddOrUpdateUser(user);
         }
+
+        public int UpdateUserToken(int userID, string token)
+        {
+            return _userDataAccess.UpdateUserToken(userID, token);
+        }
+
+        public List<string> GetUserTokenByStore(int storeID)
+        {
+            return _userDataAccess.GetUserTokenByStore(storeID);
+        }
     }
 }

@@ -13,5 +13,7 @@
         public int Type { get; set; }
 
         public int DefaultStoreID { get; set; }
+
+        public string FcmToken { get; set; }
     }
 }

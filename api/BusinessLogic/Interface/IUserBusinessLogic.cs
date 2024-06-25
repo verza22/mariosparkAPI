@@ -7,5 +7,7 @@ namespace api.BusinessLogic.Interface
         List<User> GetUsers(int store_id);
         bool RemoveUser(int userID);
         int AddOrUpdateUser(User user);
+        int UpdateUserToken(int userID, string token);
+        List<string> GetUserTokenByStore(int storeID);
     }
 }

@@ -15,10 +15,18 @@ namespace api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderBusinessLogic _orderBusinessLogic;
+        private readonly IUserBusinessLogic _userBusinessLogic;
+        private readonly INotificationBusinessLogic _notificationBusinessLogic;
 
-        public OrderController(IOrderBusinessLogic orderBusinessLogic)
+        public OrderController(
+            IOrderBusinessLogic orderBusinessLogic,
+            IUserBusinessLogic userBusinessLogic,
+            INotificationBusinessLogic notificationBusinessLogic
+         )
         {
             _orderBusinessLogic = orderBusinessLogic;
+            _userBusinessLogic = userBusinessLogic;
+            _notificationBusinessLogic = notificationBusinessLogic;
         }
 
         [HttpPost("GetOrders")]
@@ -33,6 +41,11 @@ namespace api.Controllers
                 int storeID = (int)parameters["storeID"];
 
                 List<Order> orders = _orderBusinessLogic.GetOrders(storeID);
+
+                //test
+                List<string> tokenList = _userBusinessLogic.GetUserTokenByStore(storeID);
+
+                string response = _notificationBusinessLogic.SendNotification(tokenList, "titulo prueba", "mensaje prueba");
 
                 return Ok(orders);
             }
