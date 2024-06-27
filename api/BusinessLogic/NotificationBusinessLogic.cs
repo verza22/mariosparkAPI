@@ -11,7 +11,6 @@ namespace api.BusinessLogic
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly FirebaseCloudMessagingService _fcmService;
-        private readonly string _fcmServerKey = "rbIF5pOWGDlFDgqoXNnNYo8EUN7b59Mn0UWtIMAmsXo";
         public NotificationBusinessLogic(FirebaseCloudMessagingService fcmService, IHttpClientFactory clientFactory)
         {
             _fcmService = fcmService;
@@ -20,42 +19,50 @@ namespace api.BusinessLogic
 
         public string SendNotification(List<string> registrationTokens, string title, string body)
         {
-            var fcmUrl = "https://fcm.googleapis.com/fcm/send";
+            string fcmUrl = "https://fcm.googleapis.com/v1/projects/mariospark-182a8/messages:send";
 
-            // Construir el objeto de mensaje FCM
-            var message = new
-            {
-                registration_ids = registrationTokens, // Lista de tokens de los dispositivos
-                notification = new
-                {
-                    title = title,
-                    body = body
-                }
-            };
-
-            // Convertir el objeto a formato JSON
-            string jsonMessage = JsonConvert.SerializeObject(message);
-
-            // Crear una solicitud HTTP POST hacia FCM
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, fcmUrl);
-            requestMessage.Headers.TryAddWithoutValidation("Authorization", $"key={_fcmServerKey}");
-            requestMessage.Content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
-
-            // Enviar la solicitud HTTP y obtener la respuesta
             var client = _clientFactory.CreateClient();
+            var responses = new List<string>();
 
-            var response = client.Send(requestMessage);
+            foreach (var token in registrationTokens)
+            {
+                var message = new
+                {
+                    message = new
+                    {
+                        token = token, // Enviar notificación a un único token
+                        notification = new
+                        {
+                            title = title,
+                            body = body
+                        }
+                    }
+                };
 
-            // Verificar el estado de la respuesta
-            if (response.IsSuccessStatusCode)
-            {
-                return "Notificación enviada correctamente a todos los dispositivos";
+                // Convertir el objeto a formato JSON
+                string jsonMessage = JsonConvert.SerializeObject(message);
+
+                // Crear una solicitud HTTP POST hacia FCM
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, fcmUrl);
+                requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _fcmService.ApiKey);
+                requestMessage.Content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
+
+                // Enviar la solicitud HTTP y obtener la respuesta
+                var response = client.Send(requestMessage);
+
+                // Verificar el estado de la respuesta
+                if (response.IsSuccessStatusCode)
+                {
+                    responses.Add($"Notificación enviada correctamente a {token}");
+                }
+                else
+                {
+                    var errorResponse = response.Content.ReadAsStringAsync().Result;
+                    responses.Add($"Error al enviar la notificación a {token}: {errorResponse}");
+                }
             }
-            else
-            {
-                var errorResponse = response.Content.ReadAsStringAsync().Result;
-                return "Error al enviar la notificación: " + errorResponse;
-            }
+
+            return string.Join("\n", responses);
         }
     }
 }

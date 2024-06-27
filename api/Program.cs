@@ -107,11 +107,14 @@ void ConfigureFirebaseMessaging(IServiceCollection services, IConfiguration conf
             .CreateScoped(FirebaseCloudMessagingService.Scope.FirebaseMessaging);
     }
 
+    string token = credential.UnderlyingCredential.GetAccessTokenForRequestAsync().GetAwaiter().GetResult();
+
     // Initialize Firebase Cloud Messaging service
     var fcmService = new FirebaseCloudMessagingService(new BaseClientService.Initializer
     {
         HttpClientInitializer = credential,
         ApplicationName = "MariosPark",
+        ApiKey = token
     });
 
     // Register Firebase Cloud Messaging service as singleton
