@@ -42,11 +42,6 @@ namespace api.Controllers
 
                 List<Order> orders = _orderBusinessLogic.GetOrders(storeID);
 
-                //test
-                List<string> tokenList = _userBusinessLogic.GetUserTokenByStore(storeID);
-
-                string response = _notificationBusinessLogic.SendNotification(tokenList, "titulo prueba", "mensaje prueba");
-
                 return Ok(orders);
             }
             catch (ArgumentException ex)
@@ -89,6 +84,15 @@ namespace api.Controllers
                 order.Products = JsonConvert.DeserializeObject<List<Product>>((string)parameters["products"]);
 
                 int result = _orderBusinessLogic.InsertOrder(order);
+
+                if (result > 0) 
+                {
+                    string title = "Nueva venta en caja";
+                    string message = "$ "+ order.Total+", cliente: "+ order.Customer.Name;
+
+                    List<string> tokenList = _userBusinessLogic.GetUserTokenByStore(order.StoreId);
+                    string response = _notificationBusinessLogic.SendNotification(tokenList, title, message);
+                }
 
                 return Ok(result);
             }

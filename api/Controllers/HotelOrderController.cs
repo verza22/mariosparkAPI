@@ -16,10 +16,18 @@ namespace api.Controllers
     public class HotelOrderController : ControllerBase
     {
         private readonly IHotelOrderBusinessLogic _hotelOrderBusinessLogic;
+        private readonly IUserBusinessLogic _userBusinessLogic;
+        private readonly INotificationBusinessLogic _notificationBusinessLogic;
 
-        public HotelOrderController(IHotelOrderBusinessLogic hotelOrderBusinessLogic)
+        public HotelOrderController(
+            IHotelOrderBusinessLogic hotelOrderBusinessLogic,
+            IUserBusinessLogic userBusinessLogic,
+            INotificationBusinessLogic notificationBusinessLogic
+        )
         {
             _hotelOrderBusinessLogic = hotelOrderBusinessLogic;
+            _userBusinessLogic = userBusinessLogic;
+            _notificationBusinessLogic = notificationBusinessLogic;
         }
 
         [HttpPost("GetHotelOrders")]
@@ -95,6 +103,15 @@ namespace api.Controllers
                 order.Room = JsonConvert.DeserializeObject<HotelRoom>((string)parameters["room"]);
 
                 int result = _hotelOrderBusinessLogic.AddOrUpdateHotelOrder(order);
+
+                if (result > 0 && order.Id == 0)
+                {
+                    string title = "Nueva venta en hospedaje";
+                    string message = "$ " + order.Total + ", cliente: " + order.Customer.Name;
+
+                    List<string> tokenList = _userBusinessLogic.GetUserTokenByStore(order.StoreId);
+                    string response = _notificationBusinessLogic.SendNotification(tokenList, title, message);
+                }
 
                 return Ok(result);
             }
