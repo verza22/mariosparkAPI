@@ -116,5 +116,27 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("UpdateUserPassword")]
+        public IActionResult UpdateUserPassword([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "userID", typeof(int) },
+                    { "password", typeof(string) }
+                });
+                int userID = (int)parameters["userID"];
+                string password = (string)parameters["password"];
+
+                int isUpdated = _userBusinessLogic.UpdateUserPassword(userID, password);
+
+                return Ok(isUpdated);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

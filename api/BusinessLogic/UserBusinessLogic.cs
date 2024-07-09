@@ -38,5 +38,10 @@ namespace api.BusinessLogic
         {
             return _userDataAccess.GetUserTokenByStore(storeID);
         }
+
+        public int UpdateUserPassword(int userID, string password)
+        {
+            return _userDataAccess.UpdateUserPassword(userID, password);
+        }
     }
 }

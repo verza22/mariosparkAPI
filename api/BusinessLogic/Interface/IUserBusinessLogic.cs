@@ -9,5 +9,6 @@ namespace api.BusinessLogic.Interface
         int AddOrUpdateUser(User user);
         int UpdateUserToken(int userID, string token);
         List<string> GetUserTokenByStore(int storeID);
+        int UpdateUserPassword(int userID, string password);
     }
 }

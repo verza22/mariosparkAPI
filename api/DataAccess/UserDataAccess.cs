@@ -149,5 +149,32 @@ namespace api.DataAccess
 
             return tokenList;
         }
+
+        public int UpdateUserPassword(int userID, string password)
+        {
+            int result = 0;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("UpdateUserPassword", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@userId", userID);
+            command.Parameters.AddWithValue("@password", password);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return result;
+        }
     }
 }
