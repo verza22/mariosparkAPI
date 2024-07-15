@@ -4,6 +4,8 @@ using api.Lib;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Data;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -106,6 +108,37 @@ namespace api.Controllers
                 int result = _widgetBusinessLogic.AddOrUpdateWidget(widget);
 
                 return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("GetWidgetData")]
+        public IActionResult GetWidgetData([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "widgetID", typeof(int) },
+                    { "storeID", typeof(int) },
+                    { "type", typeof(int) }
+                });
+                int widgetID = (int)parameters["widgetID"];
+                int storeID = (int)parameters["storeID"];
+                WidgetType type = (WidgetType)(int)parameters["type"];
+
+                if (type == WidgetType.Kpi)
+                {
+                    int result = _widgetBusinessLogic.GetWidgetData(widgetID, storeID);
+                    return Ok(result);
+                }
+                else 
+                {
+                    DataTable data = _widgetBusinessLogic.GetWidgetDataList(widgetID, storeID);
+                    return Ok(JsonConvert.SerializeObject(data));
+                }
             }
             catch (ArgumentException ex)
             {

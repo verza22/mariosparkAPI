@@ -1,6 +1,7 @@
 ﻿using api.BusinessLogic.Interface;
 using api.DataAccess;
 using api.Models;
+using System.Data;
 
 namespace api.BusinessLogic
 {
@@ -27,6 +28,16 @@ namespace api.BusinessLogic
         public int AddOrUpdateWidget(Widget widget)
         {
             return _widgetDataAccess.AddOrUpdateWidget(widget);
+        }
+
+        public int GetWidgetData(int widgetID, int storeID)
+        {
+            return _widgetDataAccess.GetWidgetData(widgetID, storeID);
+        }
+
+        public DataTable GetWidgetDataList(int widgetID, int storeID)
+        {
+            return _widgetDataAccess.GetWidgetDataList(widgetID, storeID);
         }
     }
 }

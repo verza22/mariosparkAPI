@@ -119,5 +119,55 @@ namespace api.DataAccess
 
             return result;
         }
+
+        public int GetWidgetData(int widgetID, int storeID)
+        {
+            int result = 0;
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetWidgetData", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@widgetID", widgetID);
+            command.Parameters.AddWithValue("@storeID", storeID);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                result = Convert.ToInt32(reader["RESULT"]);
+            }
+
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return result;
+        }
+
+        public DataTable GetWidgetDataList(int widgetID, int storeID)
+        {
+            DataTable resultTable = new DataTable();
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetWidgetDataList", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@widgetID", widgetID);
+            command.Parameters.AddWithValue("@storeID", storeID);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            resultTable.Load(reader);
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return resultTable;
+        }
+
     }
 }
