@@ -169,5 +169,21 @@ namespace api.DataAccess
             return resultTable;
         }
 
+        public void UpdateWidgetPositions(int userID, string widgetIDs)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("UpdateWidgetPositions", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@userID", userID);
+            command.Parameters.AddWithValue("@widgetIDs", widgetIDs);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+        }
+
     }
 }

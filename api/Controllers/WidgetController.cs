@@ -145,5 +145,27 @@ namespace api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("UpdateWidgetPositions")]
+        public IActionResult UpdateWidgetPositions([FromBody] JsonElement requestBody)
+        {
+            try
+            {
+                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
+                    { "userID", typeof(int) },
+                    { "widgetIDs", typeof(string) }
+                });
+                int userID = (int)parameters["userID"];
+                string widgetIDs = (string)parameters["widgetIDs"];
+
+                _widgetBusinessLogic.UpdateWidgetPositions(userID, widgetIDs);
+
+                return Ok("ok");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

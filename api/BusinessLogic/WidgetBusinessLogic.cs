@@ -39,5 +39,10 @@ namespace api.BusinessLogic
         {
             return _widgetDataAccess.GetWidgetDataList(widgetID, storeID);
         }
+
+        public void UpdateWidgetPositions(int userID, string widgetIDs)
+        {
+            _widgetDataAccess.UpdateWidgetPositions(userID, widgetIDs);
+        }
     }
 }
