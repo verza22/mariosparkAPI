@@ -11,5 +11,7 @@ namespace api.BusinessLogic.Interface
         int GetWidgetData(int widgetID, int storeID);
         DataTable GetWidgetDataList(int widgetID, int storeID);
         void UpdateWidgetPositions(int userID, string widgetIDs);
+        DataTable GetWidgetTypeList();
+        DataTable GetWidgetInfoTypeList();
     }
 }

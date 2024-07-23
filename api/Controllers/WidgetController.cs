@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Security.Claims;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace api.Controllers
 {
@@ -161,6 +162,22 @@ namespace api.Controllers
                 _widgetBusinessLogic.UpdateWidgetPositions(userID, widgetIDs);
 
                 return Ok("ok");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("GetWidgetTypeList")]
+        public IActionResult GetWidgetTypeList()
+        {
+            try
+            {
+                DataTable widgetTypeList = _widgetBusinessLogic.GetWidgetTypeList();
+                DataTable widgetInfoTypeList = _widgetBusinessLogic.GetWidgetInfoTypeList();
+
+                return Ok(JsonConvert.SerializeObject(new { widgetTypeList, widgetInfoTypeList }));
             }
             catch (ArgumentException ex)
             {

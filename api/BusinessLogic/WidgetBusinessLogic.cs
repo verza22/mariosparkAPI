@@ -44,5 +44,15 @@ namespace api.BusinessLogic
         {
             _widgetDataAccess.UpdateWidgetPositions(userID, widgetIDs);
         }
+
+        public DataTable GetWidgetTypeList()
+        {
+            return _widgetDataAccess.GetWidgetTypeList();
+        }
+
+        public DataTable GetWidgetInfoTypeList()
+        {
+            return _widgetDataAccess.GetWidgetInfoTypeList();
+        }
     }
 }

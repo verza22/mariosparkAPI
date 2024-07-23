@@ -2,25 +2,25 @@
 {
     public enum WidgetType
     {
-        Kpi = 0,
-        List = 1,
-        Pie = 2,
-        Column = 3
+        Kpi = 1,
+        List = 2,
+        Pie = 3,
+        Column = 4
     }
 
     public enum WidgetInfoType
     {
-        OrderTotal = 0,
-        OrderCount = 1,
-        HotelOrderTotal = 2,
-        HotelOrderCount = 3,
-        WaiterOrderTotal = 4,
-        WaiterOrderCount = 5,
-        CustomerCount = 6,
-        ProductCount = 7,
-        CategoryCount = 8,
-        OtherCustomerCount = 9,
-        OtherProductCount = 10
+        OrderTotal = 1,
+        OrderCount = 2,
+        HotelOrderTotal = 3,
+        HotelOrderCount = 4,
+        WaiterOrderTotal = 5,
+        WaiterOrderCount = 6,
+        CustomerCount = 7,
+        ProductCount = 8,
+        CategoryCount = 9,
+        OtherCustomerCount = 10,
+        OtherProductCount = 11
     }
 
     public enum DateType

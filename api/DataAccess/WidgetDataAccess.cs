@@ -185,5 +185,43 @@ namespace api.DataAccess
                 connection.Close();
         }
 
+        public DataTable GetWidgetTypeList()
+        {
+            DataTable resultTable = new DataTable();
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetWidgetTypeList", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            resultTable.Load(reader);
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return resultTable;
+        }
+
+        public DataTable GetWidgetInfoTypeList()
+        {
+            DataTable resultTable = new DataTable();
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetWidgetInfoTypeList", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            resultTable.Load(reader);
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return resultTable;
+        }
+
     }
 }
