@@ -136,7 +136,7 @@ namespace api.DataAccess
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                result = Convert.ToInt32(reader["RESULT"]);
+                result = reader["RESULT"] != DBNull.Value ? Convert.ToInt32(reader["RESULT"]) : 0;
             }
 
             reader.Close();
