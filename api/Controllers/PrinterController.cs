@@ -71,7 +71,7 @@ namespace api.Controllers
                     { "id", typeof(int) },
                     { "name", typeof(string) },
                     { "ip", typeof(string) },
-                    { "isPrincipal", typeof(int) },
+                    { "isPrincipal", typeof(bool) },
                     { "storeID", typeof(int) }
                 });
 
