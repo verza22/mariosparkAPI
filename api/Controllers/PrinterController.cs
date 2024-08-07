@@ -72,6 +72,8 @@ namespace api.Controllers
                     { "name", typeof(string) },
                     { "ip", typeof(string) },
                     { "isPrincipal", typeof(bool) },
+                    { "messageIni", typeof(string) },
+                    { "messageFin", typeof(string) },
                     { "storeID", typeof(int) }
                 });
 
@@ -81,6 +83,8 @@ namespace api.Controllers
                 printer.Name = (string)parameters["name"];
                 printer.Ip = (string)parameters["ip"];
                 printer.IsPrincipal = (bool)parameters["isPrincipal"];
+                printer.MessageIni = (string)parameters["messageIni"];
+                printer.MessageFin = (string)parameters["messageFin"];
                 printer.StoreID = (int)parameters["storeID"];
 
                 int result = _printerBusinessLogic.AddOrUpdatePrinter(printer);

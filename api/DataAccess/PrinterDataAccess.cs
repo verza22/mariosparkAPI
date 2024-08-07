@@ -34,6 +34,8 @@ namespace api.DataAccess
                 printer.Name = reader["TX_NAME"].ToString();
                 printer.Ip = reader["TX_IP"].ToString();
                 printer.IsPrincipal = Convert.ToBoolean(reader["CD_IS_PRINCIPAL"]);
+                printer.MessageIni = reader["TX_MESSAGE_INI"].ToString();
+                printer.MessageFin = reader["TX_MESSAGE_FIN"].ToString();
                 printer.StoreID = Convert.ToInt32(reader["CD_STORE_ID"]);
 
                 printers.Add(printer);
@@ -80,6 +82,8 @@ namespace api.DataAccess
             command.Parameters.AddWithValue("@name", printer.Name);
             command.Parameters.AddWithValue("@ip", printer.Ip);
             command.Parameters.AddWithValue("@isPrincipal", printer.IsPrincipal);
+            command.Parameters.AddWithValue("@messageIni", printer.MessageIni);
+            command.Parameters.AddWithValue("@messageFin", printer.MessageFin);
             command.Parameters.AddWithValue("@storeId", printer.StoreID);
 
             connection.Open();

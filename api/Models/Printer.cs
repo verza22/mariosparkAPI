@@ -10,6 +10,10 @@
 
         public bool IsPrincipal { get; set; }
 
+        public string MessageIni { get; set; }
+
+        public string MessageFin { get; set; }
+
         public int StoreID { get; set; }
     }
 }
