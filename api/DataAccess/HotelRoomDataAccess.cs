@@ -35,6 +35,9 @@ namespace api.DataAccess
                 room.Capacity = Convert.ToInt32(reader["INT_CAPACITY"]);
                 room.Type = Convert.ToInt32(reader["CD_ROOM_TYPE_ID"].ToString());
                 room.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+                room.PriceBabies = Convert.ToDecimal(reader["DEC_PRICE_BABIES"]);
+                room.PriceChildren = Convert.ToDecimal(reader["DEC_PRICE_CHILDREN"]);
+                room.PriceAdults = Convert.ToDecimal(reader["DEC_PRICE_ADULTS"]);
 
                 rooms.Add(room);
             }
@@ -81,6 +84,9 @@ namespace api.DataAccess
             command.Parameters.AddWithValue("@capacity", room.Capacity);
             command.Parameters.AddWithValue("@roomTypeId", room.Type);
             command.Parameters.AddWithValue("@storeId", room.StoreId);
+            command.Parameters.AddWithValue("@priceBabies", room.PriceBabies);
+            command.Parameters.AddWithValue("@priceChildren", room.PriceChildren);
+            command.Parameters.AddWithValue("@priceAdults", room.PriceAdults);
 
             connection.Open();
 

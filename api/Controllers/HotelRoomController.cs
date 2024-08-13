@@ -72,7 +72,10 @@ namespace api.Controllers
                     { "name", typeof(string) },
                     { "capacity", typeof(int) },
                     { "roomType", typeof(int) },
-                    { "storeID", typeof(int) }
+                    { "storeID", typeof(int) },
+                    { "priceBabies", typeof(decimal) },
+                    { "priceChildren", typeof(decimal) },
+                    { "priceAdults", typeof(decimal) }
                 });
 
                 HotelRoom room = new HotelRoom();
@@ -82,6 +85,9 @@ namespace api.Controllers
                 room.Capacity = (int)parameters["capacity"];
                 room.Type = (int)parameters["roomType"];
                 room.StoreId = (int)parameters["storeID"];
+                room.PriceBabies = (decimal)parameters["priceBabies"];
+                room.PriceChildren = (decimal)parameters["priceChildren"];
+                room.PriceAdults = (decimal)parameters["priceAdults"];
 
                 int result = _hotelRoomBusinessLogic.AddOrUpdateHotelRoom(room);
 

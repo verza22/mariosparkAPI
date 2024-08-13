@@ -11,5 +11,11 @@
         public int Type { get; set; }
 
         public int StoreId { get; set; }
+
+        public decimal PriceBabies { get; set; }
+
+        public decimal PriceChildren { get; set; }
+
+        public decimal PriceAdults { get; set; }
     }
 }
