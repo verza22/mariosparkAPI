@@ -7,6 +7,9 @@
         public int UserId { get; set; }
 
         public decimal Total { get; set; }
+        public int CantBabies { get; set; }
+        public int CantChildren { get; set; }
+        public int CantAdult { get; set; }
 
         public DateTime DateIN { get; set; }
 

@@ -39,6 +39,9 @@ namespace api.DataAccess
                 order.PaymentMethod = reader["TX_PAYMENT_METHOD"].ToString();
                 order.People = Convert.ToInt32(reader["INT_PEOPLE"]);
                 order.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+                order.CantBabies = Convert.ToInt32(reader["CD_CANT_BABIES"]);
+                order.CantChildren = Convert.ToInt32(reader["CD_CANT_CHILDREN"]);
+                order.CantAdult = Convert.ToInt32(reader["CD_CANT_ADULT"]);
                 order.Room = JsonConvert.DeserializeObject<HotelRoom>(reader["JS_ROOM"].ToString());
                 order.Customer = JsonConvert.DeserializeObject<Customer>(reader["JS_CUSTOMER"].ToString());
 
@@ -91,6 +94,9 @@ namespace api.DataAccess
             command.Parameters.AddWithValue("@paymentMethod", order.PaymentMethod);
             command.Parameters.AddWithValue("@people", order.People);
             command.Parameters.AddWithValue("@storeId", order.StoreId);
+            command.Parameters.AddWithValue("@cantBabies", order.CantBabies);
+            command.Parameters.AddWithValue("@cantChildren", order.CantChildren);
+            command.Parameters.AddWithValue("@cantAdult", order.CantAdult);
             command.Parameters.AddWithValue("@customer", JsonConvert.SerializeObject(order.Customer));
             command.Parameters.AddWithValue("@room", JsonConvert.SerializeObject(order.Room));
 

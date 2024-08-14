@@ -85,6 +85,9 @@ namespace api.Controllers
                     { "paymentMethod", typeof(string) },
                     { "people", typeof(int) },
                     { "storeID", typeof(int) },
+                    { "cantBabies", typeof(int) },
+                    { "cantChildren", typeof(int) },
+                    { "cantAdult", typeof(int) },
                     { "customer", typeof(string) },
                     { "room", typeof(string) }
                 });
@@ -99,6 +102,9 @@ namespace api.Controllers
                 order.PaymentMethod = (string)parameters["paymentMethod"];
                 order.People = (int)parameters["people"];
                 order.StoreId = (int)parameters["storeID"];
+                order.CantBabies = (int)parameters["cantBabies"];
+                order.CantChildren = (int)parameters["cantChildren"];
+                order.CantAdult = (int)parameters["cantAdult"];
                 order.Customer = JsonConvert.DeserializeObject<Customer>((string)parameters["customer"]);
                 order.Room = JsonConvert.DeserializeObject<HotelRoom>((string)parameters["room"]);
 
