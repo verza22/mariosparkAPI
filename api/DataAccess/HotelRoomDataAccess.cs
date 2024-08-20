@@ -13,6 +13,41 @@ namespace api.DataAccess
             this.connectionString = connectionString;
         }
 
+        public HotelRoom GetHotelRoom(int id)
+        {
+            HotelRoom room = new HotelRoom();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetHotelRoom", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@id", id);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+
+                room.Id = Convert.ToInt32(reader["KY_ROOM_ID"]);
+                room.Name = reader["TX_ROOM_NAME"].ToString();
+                room.Capacity = Convert.ToInt32(reader["INT_CAPACITY"]);
+                room.Type = Convert.ToInt32(reader["CD_ROOM_TYPE_ID"].ToString());
+                room.StoreId = Convert.ToInt32(reader["CD_STORE_ID"]);
+                room.PriceBabies = Convert.ToDecimal(reader["DEC_PRICE_BABIES"]);
+                room.PriceChildren = Convert.ToDecimal(reader["DEC_PRICE_CHILDREN"]);
+                room.PriceAdults = Convert.ToDecimal(reader["DEC_PRICE_ADULTS"]);
+                room.Image = reader["TX_IMAGE"].ToString();
+                room.Description = reader["TX_DESCRIPTION"].ToString();
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return room;
+        }
+
         public List<HotelRoom> GetHotelRooms(int store_id)
         {
             List<HotelRoom> rooms = new List<HotelRoom>();
@@ -38,6 +73,8 @@ namespace api.DataAccess
                 room.PriceBabies = Convert.ToDecimal(reader["DEC_PRICE_BABIES"]);
                 room.PriceChildren = Convert.ToDecimal(reader["DEC_PRICE_CHILDREN"]);
                 room.PriceAdults = Convert.ToDecimal(reader["DEC_PRICE_ADULTS"]);
+                room.Image = reader["TX_IMAGE"].ToString();
+                room.Description = reader["TX_DESCRIPTION"].ToString();
 
                 rooms.Add(room);
             }
@@ -87,6 +124,8 @@ namespace api.DataAccess
             command.Parameters.AddWithValue("@priceBabies", room.PriceBabies);
             command.Parameters.AddWithValue("@priceChildren", room.PriceChildren);
             command.Parameters.AddWithValue("@priceAdults", room.PriceAdults);
+            command.Parameters.AddWithValue("@image", room.Image);
+            command.Parameters.AddWithValue("@description", room.Description);
 
             connection.Open();
 

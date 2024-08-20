@@ -17,5 +17,8 @@
         public decimal PriceChildren { get; set; }
 
         public decimal PriceAdults { get; set; }
+        public string Image { get; set; }
+
+        public string Description { get; set; }
     }
 }

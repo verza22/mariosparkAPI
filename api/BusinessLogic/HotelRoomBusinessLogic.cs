@@ -14,6 +14,11 @@ namespace api.BusinessLogic
             _hotelRoomDataAccess = new HotelRoomDataAccess(connectionString);
         }
 
+        public HotelRoom GetHotelRoom(int id)
+        {
+            return _hotelRoomDataAccess.GetHotelRoom(id);
+        }
+
         public List<HotelRoom> GetHotelRooms(int store_id)
         {
             return _hotelRoomDataAccess.GetHotelRooms(store_id);

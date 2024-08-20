@@ -63,31 +63,59 @@ namespace api.Controllers
         }
 
         [HttpPost("AddOrUpdateHotelRoom")]
-        public async Task<IActionResult> AddOrUpdateHotelRoom([FromBody] JsonElement requestBody)
+        public async Task<IActionResult> AddOrUpdateHotelRoom(
+            [FromForm] int id,
+            [FromForm] string name,
+            [FromForm] int capacity,
+            [FromForm] int roomType,
+            [FromForm] int storeID,
+            [FromForm] decimal priceBabies,
+            [FromForm] decimal priceChildren,
+            [FromForm] decimal priceAdults,
+            [FromForm] string description,
+            [FromForm] bool changeImage,
+            IFormFile? image)
         {
             try
             {
-                var parameters = Util.ValidateRequest(requestBody, new Dictionary<string, Type>{
-                    { "id", typeof(int) },
-                    { "name", typeof(string) },
-                    { "capacity", typeof(int) },
-                    { "roomType", typeof(int) },
-                    { "storeID", typeof(int) },
-                    { "priceBabies", typeof(decimal) },
-                    { "priceChildren", typeof(decimal) },
-                    { "priceAdults", typeof(decimal) }
-                });
+                if (changeImage && (image == null || image.Length == 0))
+                    return BadRequest("No image provided.");
 
-                HotelRoom room = new HotelRoom();
+                HotelRoom room = _hotelRoomBusinessLogic.GetHotelRoom(id);
+                string imageUrl = room.Image;
 
-                room.Id = (int)parameters["id"];
-                room.Name = (string)parameters["name"];
-                room.Capacity = (int)parameters["capacity"];
-                room.Type = (int)parameters["roomType"];
-                room.StoreId = (int)parameters["storeID"];
-                room.PriceBabies = (decimal)parameters["priceBabies"];
-                room.PriceChildren = (decimal)parameters["priceChildren"];
-                room.PriceAdults = (decimal)parameters["priceAdults"];
+                if (id > 0 && changeImage)
+                {
+                    Util.RemoveImage(imageUrl);
+                }
+
+                if (changeImage)
+                {
+                    var fileName = $"{DateTime.Now:yyyyMMddHHmmss}_{storeID}_{Guid.NewGuid().ToString()}.jpg";
+
+                    var folderPath = Path.Combine("wwwroot", "images");
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    var filePath = Path.Combine(folderPath, fileName);
+
+                    var stream = new FileStream(filePath, FileMode.Create);
+                    await image.CopyToAsync(stream);
+                    stream.Close();
+
+                    imageUrl = Path.Combine("images", fileName);
+                }
+
+                room.Id = id;
+                room.Name = name;
+                room.Capacity = capacity;
+                room.Type = roomType;
+                room.StoreId = storeID;
+                room.PriceBabies = priceBabies;
+                room.PriceChildren = priceChildren;
+                room.PriceAdults = priceAdults;
+                room.Image = imageUrl;
+                room.Description = description;
 
                 int result = _hotelRoomBusinessLogic.AddOrUpdateHotelRoom(room);
 
