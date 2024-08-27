@@ -156,5 +156,36 @@ namespace api.DataAccess
 
             return hotelRoomTypeList;
         }
+
+        public List<UserConfig> GetUserConfig(int userID)
+        {
+            List<UserConfig> userConfigList = new List<UserConfig>();
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand("GetUserConfig", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@userID", userID);
+
+            connection.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                UserConfig userConfig = new UserConfig();
+
+                userConfig.Id = Convert.ToInt32(reader["KY_CONFIG_ID"]);
+                userConfig.Code = reader["TX_CODE"].ToString();
+                userConfig.Value = reader["TX_VALUE"].ToString();
+
+                userConfigList.Add(userConfig);
+            }
+            reader.Close();
+
+            if (connection.State == ConnectionState.Open)
+                connection.Close();
+
+            return userConfigList;
+        }
     }
 }

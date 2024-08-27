@@ -65,5 +65,10 @@ namespace api.BusinessLogic
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public List<UserConfig> GetUserConfig(int userID)
+        {
+            return _authDataAccess.GetUserConfig(userID);
+        }
     }
 }

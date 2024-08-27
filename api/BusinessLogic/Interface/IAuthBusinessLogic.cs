@@ -10,5 +10,6 @@ namespace api.BusinessLogic.Interface
         List<OrderStatus> GetOrderStatus();
         List<HotelOrderType> GetHotelOrderTypes();
         List<HotelRoomType> GetHotelRoomTypes(int store_id);
+        List<UserConfig> GetUserConfig(int userID);
     }
 }

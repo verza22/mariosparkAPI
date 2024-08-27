@@ -44,6 +44,7 @@ namespace api.Controllers
                 List<OrderStatus> orderStatusList = _authBusinessLogic.GetOrderStatus();
                 List<HotelOrderType> hotelOrderTypeList = _authBusinessLogic.GetHotelOrderTypes();
                 List<HotelRoomType> hotelRoomTypeList = _authBusinessLogic.GetHotelRoomTypes(user.DefaultStoreID);
+                List<UserConfig> userConfigList = _authBusinessLogic.GetUserConfig(user.Id);
 
                 return Ok(new { 
                     user, 
@@ -51,7 +52,8 @@ namespace api.Controllers
                     userTypes, 
                     orderStatusList, 
                     hotelOrderTypeList,
-                    hotelRoomTypeList
+                    hotelRoomTypeList,
+                    userConfigList
                 });
             }
             catch (ArgumentException ex)
